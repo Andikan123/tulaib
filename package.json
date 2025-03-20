@@ -9,13 +9,6 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
- "proxy": {
-    "/v2025-03-18": {
-      "target": "https://mtqj8g3m.api.sanity.io",
-      "changeOrigin": true,
-      "secure": false
-    }
-  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@sanity/client": "^6.28.3",

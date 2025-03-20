@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios"; // Importing Axios
+import client from "../sanityClient";
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]); // State to hold fetched menu items
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+
+ 
 
   // Fetch data from Sanity using Axios
   useEffect(() => {
@@ -13,16 +16,22 @@ const Menu = () => {
       
       try {
         // Fetching data with Axios
-        const response = await axios.get(url);
+        const query = `*[_type == "foodMenu"]{
+          _id, name, description, price, category,
+          "imageUrl": image.asset->url
+        }`;
+      
+        const response = await client.fetch(query);
+        setMenuItems(response);
         
-        console.log('Sanity API Response:', response.data); // Log the response for debugging
+        console.log('Sanity API Response:', response); // Log the response for debugging
 
-        // Process the data from the response
-        if (response.data && response.data.result && response.data.result.length > 0) {
-          setMenuItems(response.data.result); // Update state with fetched menu items
-        } else {
-          setError('No data found.'); // Handle the case where no data is returned
-        }
+        // Process the data from the response https://us05web.zoom.us/j/87524357390?pwd=kO3Enk2k1xR6o3ig5bt3Za6OJXUq2h.1
+        // if (response.data && response.data.result && response.data.result.length > 0) {
+        //   setMenuItems(response.data.result); // Update state with fetched menu items
+        // } else {
+        //   setError('No data found.'); // Handle the case where no data is returned
+        // }
       } catch (error) {
         console.error('Error fetching data:', error); // Log any errors
         setError('Failed to fetch menu items.'); // Display error message if fetching fails

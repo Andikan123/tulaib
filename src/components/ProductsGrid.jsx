@@ -15,7 +15,7 @@ const ProductsGrid = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       const url =
-        "/sanity-api/v2025-03-18/data/query/production?query=*%5B_type%3D%3D%22foodMenu%22%5D%7B_id%2Cname%2Cdescription%2Cprice%2Ccategory%2Cimage%7Basset-%3E%7B_id%2Curl%7D%7D%7D";
+        "https://mtqj8g3m.api.sanity.io/v2025-03-18/data/query/production?query=*%5B_type%3D%3D%22foodMenu%22%5D%7B_id%2Cname%2Cdescription%2Cprice%2Ccategory%2Cimage%7Basset-%3E%7B_id%2Curl%7D%7D%7D";
 
       try {
         const response = await axios.get(url);
