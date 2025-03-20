@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaHeart } from "react-icons/fa";
+import client from "../sanityClient";
+import { foodMenuQuery } from "../utils/queries";
 
 // Function to format price (if needed)
 const formatPrice = (price) => `$${price.toFixed(2)}`;
@@ -14,18 +15,9 @@ const ProductsGrid = () => {
 
   useEffect(() => {
     const fetchMenuItems = async () => {
-      const url =
-        "https://mtqj8g3m.api.sanity.io/v2025-03-18/data/query/production?query=*%5B_type%3D%3D%22foodMenu%22%5D%7B_id%2Cname%2Cdescription%2Cprice%2Ccategory%2Cimage%7Basset-%3E%7B_id%2Curl%7D%7D%7D";
-
       try {
-        const response = await axios.get(url);
-        console.log("Sanity API Response:", response.data);
-
-        if (response.data && response.data.result && response.data.result.length > 0) {
-          setProducts(response.data.result);
-        } else {
-          setError("No data found.");
-        }
+        const response = await client.fetch(foodMenuQuery);
+        setProducts(response);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to fetch menu items.");
@@ -78,11 +70,15 @@ const ProductsGrid = () => {
               <p className="text-sm text-gray-500">{description}</p>
 
               {/* Price */}
-              <span className="text-lg font-bold text-primary">{formattedPrice}</span>
+              <span className="text-lg font-bold text-primary">
+                {formattedPrice}
+              </span>
 
               {/* Order Now Button */}
               <button
-                onClick={() => navigate("/reservation", { state: { selectedFood: product } })}
+                onClick={() =>
+                  navigate("/reservation", { state: { selectedFood: product } })
+                }
                 className="btn bg-green-500 text-white w-full mt-4"
               >
                 Order Now 🍽️
